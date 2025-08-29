@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using productsApi.Data;
+using productsApi.Utilities;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +13,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 });
 
 // Add dependency injection...
+builder.Services.AddTransient<IApiKeyValidator, ApiKeyValidator>();
 
 builder.Services.AddCors();
 
