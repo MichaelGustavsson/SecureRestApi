@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using productsApi.Data;
+using productsApi.Shared;
 using productsApi.Utilities;
 
 namespace productsApi.Controllers
@@ -13,10 +14,12 @@ namespace productsApi.Controllers
         private readonly IApiKeyValidator _validator = apiKeyValidator;
 
         [HttpGet]
-        public async Task<ActionResult> ListAllProducts([FromQuery] string apiKey)
+        public async Task<ActionResult> ListAllProducts()
         {
+            var apiKey = Request.Headers[Constants.HeaderName];
+
             if (string.IsNullOrWhiteSpace(apiKey)) return BadRequest();
-            if (!_validator.IsValidKey(apiKey)) return Unauthorized();
+            if (!_validator.IsValidKey(apiKey!)) return Unauthorized();
 
             var products = await _context.Products.ToListAsync();
 
@@ -24,10 +27,12 @@ namespace productsApi.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult> FindProduct(string id, [FromQuery] string apiKey)
+        public async Task<ActionResult> FindProduct(string id)
         {
+            var apiKey = Request.Headers[Constants.HeaderName];
+
             if (string.IsNullOrWhiteSpace(apiKey)) return BadRequest();
-            if (!_validator.IsValidKey(apiKey)) return Unauthorized();
+            if (!_validator.IsValidKey(apiKey!)) return Unauthorized();
 
             var product = await _context.Products.FindAsync(id);
 
