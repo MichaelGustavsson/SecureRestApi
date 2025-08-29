@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using productsApi.Data;
+using productsApi.Middleware;
 using productsApi.Utilities;
 using productsApi.Utilities.Filters;
 
@@ -26,12 +27,13 @@ var app = builder.Build();
 // =====================================================
 // Pipeline...
 // =====================================================
-
 app.UseCors(options => options
     .AllowAnyHeader()
     .AllowAnyMethod()
     .AllowAnyOrigin()
 );
+
+app.UseMiddleware<ApiKeyMiddleware>();
 
 app.MapControllers();
 

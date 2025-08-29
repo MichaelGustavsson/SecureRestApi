@@ -15,7 +15,6 @@ namespace productsApi.Controllers
         private readonly IApiKeyValidator _validator = apiKeyValidator;
 
         [HttpGet]
-        [ApiKey]
         public async Task<ActionResult> ListAllProducts()
         {
             var apiKey = Request.Headers[Constants.HeaderName];
@@ -29,7 +28,6 @@ namespace productsApi.Controllers
         }
 
         [HttpGet("{id}")]
-        [ApiKey]
         public async Task<ActionResult> FindProduct(string id)
         {
             var apiKey = Request.Headers[Constants.HeaderName];
